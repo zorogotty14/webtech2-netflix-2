@@ -1,0 +1,328 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="movies.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.fooditem{
+    
+      background-color:snow;
+      color:black;  
+            font-family: sansation;
+
+    }
+    .fooditem:hover{
+    
+      background-color:black;
+      color: white;
+    }
+</style>
+</head>
+<body>
+<nav id="nav">
+  <ul>
+   <li><a href="#logo" class="logo">MovieDB</a></li>
+   <li><a href="home.html" class="active">HOME</a></li>
+   <li><a href="tvseries.html">TV Shows</a></li>
+      <li><a href="movies.html">Movies</a></li>
+
+
+   <li><a href="rec.html">My List</a></li>
+      <li><a href="card.html">Recommendation</a></li>
+
+   <li><a href="recent.html">Recently Added</a> </li>
+   <li class="img"><a href="" ><img src="profile.png" class="profile" height="25px" width="25px"></a>
+   <div class="dropdown-content">
+      <a href="#" id="usn"></a>
+      <a href="login.php">Log out</a>
+      <a href="#">Link 3</a>
+    </div> </li>
+<li class="search">
+    <div class="search-container">
+    <form action="/action_page.php" >
+<input type="text" placeholder="Search.." name="search" id="search" onkeypress="obj.getTerm()">
+        <div id="container" style="position: absolute;top: 40px;background-color: white;color: black;border:solid 1px black;min-width: 20%;min-height:100%;z-index: 1;padding: 3px;display: none;border-radius: 3px"> </div>      
+        <button type="submit" id="sub" ><i class="fa fa-search" ></i></button>
+    </form>
+  </div></li></li>
+   </ul>
+
+</nav>
+<video autoplay muted loop id="myVideo">
+  <source src="witch.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<div class="content">
+  <h1>The Witcher</h1>
+  <p>Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.</p>
+  <br>
+  <p>Cast : Henry Cavil, Freya Allan, Joey Batey<br> Creator : Lauren Schmidt</p>
+
+  <button id="myBtn" onclick="myFunction()">Pause</button>
+</div>
+  <div class="desc" id="desc">
+    <h1>MOVIES</h1>
+    <p>Our site gives you the best experiences in entertainment with latest movies and Tv Shows</p>
+    <p>Here is a list of all available movies you can watch.</p>
+    <p>And dont forget to subscribe..</p>
+    <p>Enjoy !!</p>
+  </div>
+  <div class="movies" id="movies1">
+  
+
+</div>
+  
+
+
+
+</body>
+<script type="text/javascript">
+
+
+
+function Suggest(){
+    //Maintain a reference to the current object
+      var object=this;
+      this.timer=null;
+      this.search=null;
+      this.container=null;
+      this.url=null;
+      this.xhr=new XMLHttpRequest();
+      this.getTerm=function(){
+        this.search=document.getElementById("search");
+        this.container=document.getElementById("container");
+      //to invoke the send search function only if the user
+      //pauses for a second     
+        if(this.timer){
+          clearTimeout(this.timer);
+        }
+        this.timer=setTimeout(this.sendTerm,1000)
+        
+      
+      }
+      this.sendTerm=function(){
+        object.url="http://localhost:5000/webtech2/sb?term="+object.search.value;
+        //check if the search term is available in cache
+        // i.e. Local Storage
+        if(localStorage.getItem(object.url)){
+          var cacheRes=JSON.parse(localStorage.getItem(object.url))
+          object.populateFood(cacheRes);
+          console.log(localStorage.getItem(object.url));
+          console.log("from browser cache")
+        }
+        else{
+        object.xhr.onreadystatechange=object.showResult;
+        console.log(object.search.value)
+        console.log(this)
+        object.xhr.open("GET",object.url,true);
+        object.xhr.send();
+        }
+      }
+      this.showResult=function(){
+        if(this.readyState==4 && this.status==200){
+          var res=this.responseText;
+          var resO=JSON.parse(res);
+          alert(res)
+          alert(resO)
+          //Store search result in cache
+          localStorage.setItem(object.url,res);
+          if(resO.length==0){
+          
+            object.search.style.backgroundColor="red"
+            object.search.style.fontStyle="italics"
+          }
+          else{
+            object.populateFood(resO);  
+          }
+        }
+      }
+      this.populateFood=function(resO){
+        object.container.innerHTML="";
+        for(f in resO){
+          
+          var itemDiv=document.createElement("div");
+          itemDiv.innerHTML=resO[f];
+          itemDiv.className="fooditem";
+          itemDiv.onclick=object.setFood;
+          object.container.appendChild(itemDiv)
+          console.log(object.container)
+        }
+        object.container.style.display="block";
+        console.log(object.container)
+      
+      
+      }
+      this.setFood=function(e){
+        object.search.value=e.target.innerHTML;
+        object.search.style.backgroundColor="white";
+        object.container.style.display="none"
+        object.container.innerHTML="";
+      
+      }
+    
+    
+    
+    }
+    
+    var obj=new Suggest();  
+
+var dc=document.getElementById("usn");
+console.log(dc)
+dc.innerHTML=getCookie("username");
+
+var video = document.getElementById("myVideo");
+var btn = document.getElementById("myBtn");
+
+function myFunction() {
+  if (video.paused) {
+    video.play();
+    btn.innerHTML = "Pause";
+  } else {
+    video.pause();
+    btn.innerHTML = "Play";
+  }
+}
+
+function movieload(name,loc){
+  var movieclass = document.getElementById("movies1");
+  var a=document.createElement("a");
+  a.href="";
+
+  var divcard = document.createElement("div");
+  divcard.class="card";
+
+  divcard.style="display: inline-block;padding: 40px 40px 40px 40px;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.3s;width: 15%;height: 20%;border-radius: 8px;color: snow;margin: 0 0 240px 0;"
+  var img= document.createElement("img");
+  img.src=loc;
+  img.style.borderRadius="5px 5px 0 0";
+
+  img.style.width="100%";
+
+  divcard.appendChild(img);
+
+  var containerdiv = document.createElement("div");
+  containerdiv.class="container";
+  containerdiv.style="padding: 4px 16px;background-color: grey;border-radius: 8px";
+  var but=document.createElement("button");
+  but.type="button";
+  but.style="background-color: #f44336;font-family:sansation;font-size:14px;padding:10px 24px;border:solid 1px red;border-radius:3px"
+  but.innerHTML="ADD";
+  but.id="button";
+  var h = document.createElement("h4");
+  var b= document.createElement("b");
+  b.innerHTML=name;
+  h.appendChild(b);
+  var p= document.createElement("p");
+  p.innerHTML="This movie is awesome";
+  containerdiv.appendChild(h);
+  containerdiv.appendChild(p);
+      containerdiv.appendChild(but);
+
+  divcard.appendChild(containerdiv);
+
+  a.appendChild(divcard);
+
+  movieclass.appendChild(a);
+}
+
+ document.addEventListener('click',function(e){
+    if(e.target && e.target.id== 'button'){
+          //alert(e.target.parentNode.childNodes[0].childNodes[0].innerHTML);
+          var j= e.target.parentNode.childNodes[0].childNodes[0].innerHTML
+
+          xhr=new XMLHttpRequest();
+          xhr.onreadystatechange=showC;
+          xhr.open("GET","http://localhost:5000/webtech2/addlist?name="+getCookie("username")+"&mname="+j,true);
+          xhr.send();
+      
+      function showC(){
+      console.log(xhr.status)
+        if(xhr.readyState==4 && xhr.status==200){
+          alert("done");
+        
+        }
+        if(xhr.readyState==4 && xhr.status!=200){
+          console.log("error");
+        }     
+      }
+
+          
+     }
+ });
+
+
+function mload(){
+  for (var i = 0; i <=6; i++) {
+    movieload("avengers","aeg.jpg");
+  }
+}
+
+
+
+      xhr=new XMLHttpRequest();
+      scrollAmt=1;
+      count=0;
+      function getChunk(){
+        scroll=document.body.scrollTop||document.documentElement.scrollTop;
+        scroll=scroll - scrollAmt*count;
+        //console.log(scroll)
+        if(scroll>scrollAmt){
+          scrollAmt=scroll;
+          xhr.onreadystatechange=showChunk;
+          xhr.open("GET","http://localhost:5000/webtech2/i1?count="+count++,true);
+          xhr.send();
+        }
+      }
+      function showChunk(){
+      console.log(xhr.status)
+        if(xhr.readyState==4 && xhr.status==200){
+        console.log("hello");
+        var name=""
+        var loc=""
+          var json =JSON.parse(xhr.responseText);
+          for (i in json){
+              name=i;
+              loc=json[i]
+          }
+
+          console.log(name);
+          console.log(loc);
+
+          movieload(name,loc);
+
+              
+        
+        }
+        if(xhr.readyState==4 && xhr.status!=200){
+          console.log("done");
+              
+        
+        }
+        
+      
+      }
+
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "hello";
+}
+window.onscroll=getChunk;
+
+window.onload=mload();
+
+
+
+</script>
+</html> 

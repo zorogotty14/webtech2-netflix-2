@@ -1,0 +1,117 @@
+@font-face {
+            font-family: sansation;
+            src: url(profonts/SansationLight.woff);
+         }
+}
+@font-face{
+      font-family: nikoleta;
+      src:url(profonts/NIKOLETA.ttf);
+}
+
+
+
+body{margin:0;background-color: black;padding: 0;overflow-x: hidden;}
+nav{background-color: #333;position: fixed;top: 0;left:0;width: 100%;z-index: 1;margin: 0 auto;padding: 0;opacity: 0.6}
+nav ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: black}
+li{float: left;}
+nav ul li a {display: inline-block; color: snow;text-align: center;text-decoration: none;padding: 14px 17px;height: 23px;font-size: 17px;font-family: sansation;}
+nav ul li a:hover {color:grey;}
+nav ul li a.logo{font-family: nikoleta; color: #f44336; font-weight: bold; font-size: 20;background-color: black ;}
+
+nav ul li a.logo:hover {color: #f44336; }
+
+nav li a.active { color:grey;font-weight: bold;}
+
+nav ul li.search div form input[type=text] {
+  padding: 6px;
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  border-radius: 4px;
+}
+
+nav ul li.search div.search-container form button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+nav ul li.search div.search-container form button:hover {
+  background: red;
+}
+
+nav ul li.img,li.search{float: right;} 
+
+#myVideo {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+}
+
+.content {
+	position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+
+#myBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+#myBtn:hover {
+  background: #ddd;
+  color: black;
+}
+
+div.content{font-family: sansation; color: snow;}
+div#movies1 {max-width: 100%;min-height: 100%;margin: 10px 40px 10px 40px;position: relative;top:720px;padding: 10px;display: block;} 
+div#desc {display: block;width: 60%;min-height : 150px;position: relative;top:720px;left: 150px;margin: 30px;}
+div#desc h1{font-family: sansation; color: #f44336; font-size: 25px; }
+div#desc p{font-family: sansation;color :snow;}
+
+
+nav ul li.img div.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 20px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+nav ul li.img div.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+nav ul li.img div.dropdown-content a:hover {
+  background-color: red;
+}
+
+nav ul li.img:hover .dropdown-content {
+  display: block;
+}
+

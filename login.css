@@ -1,0 +1,64 @@
+@font-face {
+            font-family: sansation;
+            src: url(profonts/SansationLight.woff);
+         }
+@font-face {
+      font-family: dakota;
+      src:url(profonts/dakota_update.ttf);
+}
+@font-face {
+      font-family: rounD;
+      src: url(profonts/RounD-Regular.ttf);
+}
+@font-face{
+      font-family: prod;
+      src:url(profonts/Product Sans Regular.ttf);
+}
+@font-face{
+      font-family: nikoleta;
+      src:url(profonts/NIKOLETA.ttf);
+}
+@font-face{
+      font-family: mona;
+      src:url(profonts/Mona-Free.woff);
+      font-stretch: expanded;
+}
+@font-face{
+      font-family: belda ;
+      src:url(profonts/insigne - Belda Norm Regular.otf);
+}
+@font-face{
+    font-family: architex;
+    src:url(profonts/Architex.ttf);
+}
+@font-face{
+  font-family: goodtimes;
+  src:url(profonts/good times rg.ttf);
+}
+body{margin:0;padding:0;overflow-x: hidden;background-image: url(netflix.jpg);background-repeat: no-repeat;box-shadow: 30px 20px 20px 20px black inset;
+  background-position: center;background-size: cover;height: 100%;width: 100%;background-attachment: fixed;padding: 5% 9% 10% 2%;}
+h1.net{font-family: nikoleta;font-size: 60; color: #f44336;position: absolute;top:10px;left: 630px; font-weight: bold;}
+div#log{height: 450px;width:500px;background-color: snow;opacity: 0.7;margin: 100px;position: absolute;top: 0px;left: 70px;box-shadow: 10px 10px 10px;padding: 10px;}
+div#log1{height: 650px;width:500px;background-color: snow;opacity: 0.7;margin: 100px;position: absolute;top: 0px;left: 600px;box-shadow: 10px 10px 10px;padding: 10px;}
+
+div#log form{font-family: sansation;font-size: 20px; margin :30px;}
+div#log1 form{font-family: sansation;font-size: 20px; margin :30px;}
+
+div#log h1{font-family: sansation; color:red;text-align: center;position: relative;top: 10px;}
+div#log1 h1{font-family: sansation; color:red;text-align: center;position: relative;top: 10px;}
+
+input[type=text], input[type=password],input[type=E-MAIL] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 18px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    text-shadow: 10px 10px 10px;
+}
+input.but{background-color: #f44336;color: white;padding: 14px 20px;margin: 8px 0;border: none;cursor: pointer;width: 70%;
+}
+
+input.but:hover {
+    opacity: 0.8;
+}

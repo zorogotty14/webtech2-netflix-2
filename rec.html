@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Health-Care Management</title>
+	<link rel="icon" href="">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="home.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">.fooditem{
+    
+      background-color:snow;
+      color:black;  
+            font-family: sansation;
+
+    }
+    .fooditem:hover{
+    
+      background-color:black;
+      color: white;
+    }
+    
+    </style>
+</head>
+<body>
+<nav id="nav">
+	<ul>
+   <li><a href="#logo" class="logo">MovieDB</a></li>
+   <li><a href="home.html" class="active">HOME</a></li>
+   <li><a  href="tvseries.html">TV Shows</a></li>
+   <li><a  href="movies.html">Movies</a></li>
+
+
+   <li><a href="rec.html">My List</a></li>
+         <li><a href="card.html">Recommendation</a></li>
+
+   <li><a href="recent.html">Recently Added</a> </li>
+      <li class="img"><a href="" >
+      <img src="profile.png" class="profile" height="25px" width="25px">
+      </a>
+      <div class="dropdown-content" id="dc">
+      <a href="#">Link 1</a>
+      <a href="login.php">Log Out</a>
+      <a href="#" id="usn"></a>
+    </div>
+     </li>
+    <li class="search">
+    <div class="search-container">
+    <form action="/action_page.php">
+      <input type="text" placeholder="Search.." name="search" id="search" onkeypress="obj.getTerm()">
+        <div id="container" style="position: absolute;top: 40px;background-color: white;color: black;border:solid 1px black;min-width: 20%;min-height:100%;z-index: 1;padding: 3px;display: none;border-radius: 3px"> </div>
+      <button type="submit" id="sub"><i class="fa fa-search"></i></button>
+    </form>
+  </div></li>
+   
+   </ul>
+</nav>
+<div id="rec" class="rec">
+
+ </div>
+
+
+<script type="text/javascript">
+
+function list(name,location,desc){
+var rec=document.createElement("div");
+rec.class="rec";
+rec.style="min-height: 50%;min-width: 80%;background-color: grey;margin: 10px;position: relative;top: 50px; border : solid 1px white;padding: 10px;";
+
+var img=document.createElement("img");
+img.style="max-height=50%;max-width:30%;"
+img.src=location;
+ var d=document.createElement("div");
+ d.style="position: absolute;left: 600px;top: 20px";
+ var h=document.createElement("h1");
+ h.style="font-family: nikoleta; color: maroon;";
+ h.innerHTML=name;
+
+ var p=document.createElement("p");
+ p.style="font-family: sansation;";
+ p.innerHTML=desc;
+ var but=document.createElement("button");
+  but.type="button";
+  but.style="background-color: #f44336;font-family:sansation;font-size:14px;padding:10px 24px;border:solid 1px red;border-radius:3px"
+  but.innerHTML="Delete";
+  but.id="button";
+d.appendChild(h)
+d.appendChild(p)
+d.appendChild(but)
+rec.appendChild(img);
+rec.appendChild(d);
+document.body.appendChild(rec);
+}
+
+
+
+
+ document.addEventListener('click',function(e){
+    if(e.target && e.target.id== 'button'){
+          //alert(e.target.parentNode.childNodes[0].childNodes[0].innerHTML);
+          var j= e.target.parentNode.childNodes[0].innerHTML
+
+          xhr=new XMLHttpRequest();
+          xhr.onreadystatechange=showC;
+          xhr.open("GET","http://localhost:5000/webtech2/removelist?name="+getCookie("username")+"&mname="+j,true);
+          xhr.send();
+      
+      function showC(){
+      console.log(xhr.status)
+        if(xhr.readyState==4 && xhr.status==200){
+          alert("done");
+          location.replace("rec.html")
+        
+        }
+        if(xhr.readyState==4 && xhr.status!=200){
+          console.log("error");
+        }     
+      }
+
+          
+     }
+ });
+
+      xhr=new XMLHttpRequest();
+      function getChunk(){
+          var n=getCookie("username")
+          console.log(n)
+          xhr.onreadystatechange=showChunk;
+          xhr.open("GET","http://localhost:5000/webtech2/list?name="+n,true);
+          xhr.send();
+        
+      }
+      function showChunk(){
+      //console.log(xhr.status)
+        if(xhr.readyState==4 && xhr.status==200){
+        console.log("hello");
+        var name=""
+        var loc=""
+        var rt=xhr.responseText;
+        console.log(rt)
+
+        var json=JSON.parse(rt)
+        console.log(json.name)
+
+        for (i in json.name){
+          console.log(json.name[i])
+          console.log(json.location[i])
+          list(json.name[i],json.location[i],json.description[i])
+
+        }
+
+
+                
+        }
+        }
+        
+        if(xhr.readyState==4 && xhr.status!=200){
+          console.log("done");
+        }
+      
+
+
+window.onload=getChunk;
+
+
+var dc=document.getElementById("usn");
+console.log(dc)
+dc.innerHTML=getCookie("username");
+
+
+
+
+
+  
+
+function Suggest(){
+    //Maintain a reference to the current object
+      var object=this;
+      this.timer=null;
+      this.search=null;
+      this.container=null;
+      this.url=null;
+      this.xhr=new XMLHttpRequest();
+      this.getTerm=function(){
+        this.search=document.getElementById("search");
+        this.container=document.getElementById("container");
+      //to invoke the send search function only if the user
+      //pauses for a second     
+        if(this.timer){
+          clearTimeout(this.timer);
+        }
+        this.timer=setTimeout(this.sendTerm,1000)
+        
+      
+      }
+      this.sendTerm=function(){
+        object.url="http://localhost:5000/webtech2/sb?term="+object.search.value;
+        //check if the search term is available in cache
+        // i.e. Local Storage
+        if(localStorage.getItem(object.url)){
+          var cacheRes=JSON.parse(localStorage.getItem(object.url))
+          object.populateFood(cacheRes);
+          console.log(localStorage.getItem(object.url));
+          console.log("from browser cache")
+        }
+        else{
+        object.xhr.onreadystatechange=object.showResult;
+        console.log(object.search.value)
+        console.log(this)
+        object.xhr.open("GET",object.url,true);
+        object.xhr.send();
+        }
+      }
+      this.showResult=function(){
+        if(this.readyState==4 && this.status==200){
+          var res=this.responseText;
+          var resO=JSON.parse(res);
+          alert(res)
+          alert(resO)
+          //Store search result in cache
+          localStorage.setItem(object.url,res);
+          if(resO.length==0){
+          
+            object.search.style.backgroundColor="red"
+            object.search.style.fontStyle="italics"
+          }
+          else{
+            object.populateFood(resO);  
+          }
+        }
+      }
+      this.populateFood=function(resO){
+        object.container.innerHTML="";
+        for(f in resO){
+          
+          var itemDiv=document.createElement("div");
+          itemDiv.innerHTML=resO[f];
+          itemDiv.className="fooditem";
+          itemDiv.onclick=object.setFood;
+          object.container.appendChild(itemDiv)
+          console.log(object.container)
+        }
+        object.container.style.display="block";
+        console.log(object.container)
+      
+      
+      }
+      this.setFood=function(e){
+        object.search.value=e.target.innerHTML;
+        object.search.style.backgroundColor="white";
+        object.container.style.display="none"
+        object.container.innerHTML="";
+      
+      }
+    
+    
+    
+    }
+    
+    var obj=new Suggest();  
+
+
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "hello";
+}
+
+
+</script>
+
+</body>
+</html>

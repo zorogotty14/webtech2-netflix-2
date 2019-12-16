@@ -1,0 +1,115 @@
+<html>
+	<head>
+		<style>
+		#container{
+		border:solid 1px black;
+		display:none
+		}
+		.fooditem{
+		
+			background-color:grey;
+			color:black;	
+		}
+		.fooditem:hover{
+		
+			background-color:white;
+		}
+		
+		</style>
+		<script>
+		function Suggest(){
+		//Maintain a reference to the current object
+			var object=this;
+			this.timer=null;
+			this.search=null;
+			this.container=null;
+			this.url=null;
+			this.xhr=new XMLHttpRequest();
+			this.getTerm=function(){
+				this.search=document.getElementById("search");
+				this.container=document.getElementById("container");
+			//to invoke the send search function only if the user
+			//pauses for a second			
+				if(this.timer){
+					clearTimeout(this.timer);
+				}
+				this.timer=setTimeout(this.sendTerm,1000)
+				
+			
+			}
+			this.sendTerm=function(){
+				object.url="http://localhost:5000/webtech2/sb?term="+object.search.value;
+				//check if the search term is available in cache
+				// i.e. Local Storage
+				if(localStorage.getItem(object.url)){
+					var cacheRes=JSON.parse(localStorage.getItem(object.url))
+					object.populateFood(cacheRes);
+					console.log(localStorage.getItem(object.url));
+					console.log("from browser cache")
+				}
+				else{
+				object.xhr.onreadystatechange=object.showResult;
+				console.log(object.search.value)
+				console.log(this)
+				object.xhr.open("GET",object.url,true);
+				object.xhr.send();
+				}
+			}
+			this.showResult=function(){
+				if(this.readyState==4 && this.status==200){
+					var res=this.responseText;
+					var resO=JSON.parse(res);
+					alert(res)
+					alert(resO)
+					//Store search result in cache
+					localStorage.setItem(object.url,res);
+					if(resO.length==0){
+					
+						object.search.style.backgroundColor="red"
+						object.search.style.fontStyle="italics"
+					}
+					else{
+						object.populateFood(resO);	
+					}
+				}
+			}
+			this.populateFood=function(resO){
+				object.container.innerHTML="";
+				for(f in resO){
+					
+					var itemDiv=document.createElement("div");
+					itemDiv.innerHTML=resO[f];
+					itemDiv.className="fooditem";
+					itemDiv.onclick=object.setFood;
+					object.container.appendChild(itemDiv)
+					console.log(object.container)
+				}
+				object.container.style.display="block";
+				console.log(object.container)
+			
+			
+			}
+			this.setFood=function(e){
+				object.search.value=e.target.innerHTML;
+				object.search.style.backgroundColor="white";
+				object.container.style.display="none"
+				object.container.innerHTML="";
+			
+			}
+		
+		
+		
+		}
+		
+		var obj=new Suggest();	
+		</script>
+	</head>
+	<body>
+		<table border="0" cellpadding="0">
+		<tr><td>Name</td><td><input type="text" id="person" /></td></tr>
+		<tr><td>Food</td><td><input type="text" id="search" onkeypress="obj.getTerm()" /></td></tr>
+		<tr><td></td><td><div id="container"></td></div></tr>
+		</table>
+	</body>
+
+</html>
